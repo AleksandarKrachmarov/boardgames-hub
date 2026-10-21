@@ -1,3 +1,13 @@
+from django.http import HttpResponse
+from django.http.request import HttpRequest
 from django.shortcuts import render
 
-# Create your views here.
+from games.models import BoardGame
+
+def index(request: HttpRequest) -> HttpResponse:
+    games = BoardGame.objects.all()
+    context = {
+        'games': games,
+    }
+
+    return render(request, 'games/index.html', context)
