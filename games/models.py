@@ -11,7 +11,7 @@ def validate_positive(value):
         raise ValidationError('Value must be greater than 0')
 
 class BoardGame(models.Model):
-    name = models.CharField(
+    title = models.CharField(
         max_length=100,
         verbose_name='Game Title',
     )
@@ -52,7 +52,7 @@ class BoardGame(models.Model):
     )
 
     class Meta:
-        ordering = ('-rating', 'name')
+        ordering = ('-rating', 'title')
 
     def __str__(self):
-        return self.name
+        return self.title
