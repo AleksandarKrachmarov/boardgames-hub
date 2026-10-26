@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
 from games.models import BoardGame
 
@@ -32,7 +33,20 @@ class BoardGameBaseForm(forms.ModelForm):
             'categories': 'Hold CTRL (or CMD) to select multiple categories'
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        min_players = cleaned_data.get('min_players')
+        max_players = cleaned_data.get('max_players')
+
+        if min_players and max_players and min_players > max_players:
+            raise ValidationError('Minimum number of players cannot be greater than the maximum number of players!')
+
+        return cleaned_data
+
 class BoardGameCreateForm(BoardGameBaseForm):
+    pass
+
+class BoardGameEditForm(BoardGameBaseForm):
     pass
 
 class BoardGameDeleteForm(BoardGameBaseForm):

@@ -2,13 +2,23 @@ from django.http import HttpResponse
 from django.http.request import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 
-from games.forms import BoardGameCreateForm, BoardGameDeleteForm
+from categories.models import Category
+from games.forms import BoardGameCreateForm, BoardGameDeleteForm, BoardGameEditForm
 from games.models import BoardGame
 
 def index(request: HttpRequest) -> HttpResponse:
+    category_id = request.GET.get('category')
     games = BoardGame.objects.all()
+
+    if category_id:
+        games = games.filter(categories=category_id)
+
+    categories = Category.objects.all()
+
     context = {
         'games': games,
+        'categories': categories,
+        'category_id': category_id,
     }
 
     return render(request, 'games/index.html', context)
@@ -38,12 +48,12 @@ def game_details(request: HttpRequest, pk: int) -> HttpResponse:
 def edit_game(request: HttpRequest, pk: int) -> HttpResponse:
     game = get_object_or_404(BoardGame, pk=pk)
     if request.method == 'POST':
-        form = BoardGameCreateForm(request.POST, instance=game)
+        form = BoardGameEditForm(request.POST, instance=game)
         if form.is_valid():
             form.save()
             return redirect('game_details', pk=pk)
     else:
-        form = BoardGameCreateForm(instance=game)
+        form = BoardGameEditForm(instance=game)
 
     context = {
         'form': form,
