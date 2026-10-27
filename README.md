@@ -17,23 +17,38 @@ BoardGameHub is a web application built with Django for managing and exploring a
 ## Installation & Setup Instructions
 
 1. Clone the repository:
+
     git clone https://github.com/AleksandarKrachmarov/boardgames-hub
+
     cd boardgames_hub
 
+
 2. Create and activate a virtual environment:
+
     python -m venv .venv
+
     .venv\Scripts\activate  (on Windows)
+
     source .venv/bin/activate  (on macOS/Linux)
 
+
 3. Install dependencies:
+
     pip install django
 
+
 4. Apply database migrations:
+
     python manage.py makemigrations
+
     python manage.py migrate
 
+
 5. Run the development server:
+
     python manage.py runserver
 
+
 6. Access the application:
+
     Open your browser and navigate to http://127.0.0.1:8000/. You can manually create categories, publishers, and games directly through the user interface.
